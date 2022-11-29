@@ -270,7 +270,7 @@ impl<'a> DrawingBackend for CairoBackend<'a> {
             .text_extents(text)
             .map_err(DrawingErrorKind::DrawingError)?;
 
-        Ok((extents.width as u32, extents.height as u32))
+        Ok((extents.width() as u32, extents.height() as u32))
     }
 
     fn draw_text<S: BackendTextStyle>(
@@ -312,18 +312,18 @@ impl<'a> DrawingBackend for CairoBackend<'a> {
 
         let dx = match style.anchor().h_pos {
             HPos::Left => 0.0,
-            HPos::Right => -extents.width,
-            HPos::Center => -extents.width / 2.0,
+            HPos::Right => -extents.width(),
+            HPos::Center => -extents.width() / 2.0,
         };
         let dy = match style.anchor().v_pos {
-            VPos::Top => extents.height,
-            VPos::Center => extents.height / 2.0,
+            VPos::Top => extents.height(),
+            VPos::Center => extents.height() / 2.0,
             VPos::Bottom => 0.0,
         };
 
         self.context.move_to(
-            f64::from(x) + dx - extents.x_bearing,
-            f64::from(y) + dy - extents.y_bearing - extents.height,
+            f64::from(x) + dx - extents.x_bearing(),
+            f64::from(y) + dy - extents.y_bearing() - extents.height(),
         );
 
         self.context
